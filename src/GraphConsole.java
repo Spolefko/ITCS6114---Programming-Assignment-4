@@ -41,6 +41,7 @@ public class GraphConsole {
      * performance command
      */
     public static final String PERFORMANCE = "performance";
+    
 
 	
 	public static void main(String[] args) {
@@ -74,6 +75,8 @@ public class GraphConsole {
                     	System.out.println("Please enter source vertex");
                         source = inputCmd.nextLine();
                     	performanceBellman = graph.bellmanFord(source);
+                    	if (performanceBellman == Graph.NEG_CYCLE_EXISTS)
+                    		System.out.println("The graph contains a negative weight cycle");
                         break;
                     case PERFORMANCE:
                         if (graph == null) {

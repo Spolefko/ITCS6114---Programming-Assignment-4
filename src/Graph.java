@@ -13,6 +13,11 @@ public class Graph {
 	private ArrayList<Vertex> vertexList = new ArrayList<Vertex>();
 	
 	/*
+	 * Represents when bellman-Ford algorithm finds a negative weight cycle
+	 */
+	public static final int NEG_CYCLE_EXISTS = -2; 
+	
+	/*
 	 * 
 	 */
 	public Graph(String rootPath, String inputFileName) {
@@ -91,6 +96,32 @@ public class Graph {
 				for(int j = 0; j < adjList.size(); j++) {
 					relax(Integer.toString(i), adjList.get(j).getTarget());
 				}
+			}
+		}
+		
+		//Verify that no negative cycle exists
+		int adjVertexIndex;
+		int tWeight;
+		int sWeight;
+		int stWeight;
+		String target;
+		for (int i = 0; i < (vertexList.size()-1); i++) { 
+			adjList = vertexList.get(i).getEdgeList();
+			
+			sWeight = vertexList.get(i).getShortestPathEstimate();
+			if (sWeight == Integer.MAX_VALUE)
+				continue; //No path exists to verify
+			
+			for(int j = 0; j < adjList.size(); j++) {
+				//get target shortest path weight
+				target = adjList.get(j).getTarget();
+				adjVertexIndex = Integer.parseInt(((target)));
+				tWeight = vertexList.get(adjVertexIndex).getShortestPathEstimate(); 
+				
+				stWeight = sWeight + vertexList.get(i).getEdgeWeight(target);
+
+				if (tWeight > stWeight)
+					return NEG_CYCLE_EXISTS;
 			}
 		}
 		
